@@ -13,13 +13,15 @@ import androidx.lifecycle.distinctUntilChanged
 import com.example.detectvisibilitywhilescrolling.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
 
         val scrollBounds = Rect()
 
@@ -38,6 +40,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 viewModel.toggleIsVisible(isTextFourVisible)
             }
         }
+
+        setContentView(binding.root)
     }
 }
 
