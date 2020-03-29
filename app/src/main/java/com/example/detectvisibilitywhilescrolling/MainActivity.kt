@@ -1,5 +1,6 @@
 package com.example.detectvisibilitywhilescrolling
 
+import android.graphics.Point
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,8 +24,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        val scrollBounds = Rect()
-
         viewModel.visibilityChanged.observe(this) {
             if(it) {
                 Toast.makeText(this, "Text Four SHOWN!!", Toast.LENGTH_SHORT).show()
@@ -34,10 +33,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.scrollView.apply {
+            val scrollBounds = Rect()
+            val point = Point()
             setOnScrollChangeListener { _, _, _, _, _ ->
-                this.getHitRect(scrollBounds)
-                val isTextFourVisible = binding.textFour.getLocalVisibleRect(scrollBounds)
-                viewModel.toggleIsVisible(isTextFourVisible)
+                getHitRect(scrollBounds)
+                val isVisible = getChildVisibleRect(binding.textFour, scrollBounds, point)
+                viewModel.toggleIsVisible(isVisible)
             }
         }
 
