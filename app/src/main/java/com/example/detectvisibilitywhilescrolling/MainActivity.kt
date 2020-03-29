@@ -48,13 +48,16 @@ class MainActivity : AppCompatActivity() {
 
 class MainViewModel: ViewModel() {
 
-    private val visibilityChangedMutable = MutableLiveData<Boolean>().apply { postValue(false) }
+    private var previousVisibility = false
+
+    private val visibilityChangedMutable = MutableLiveData<Boolean>()
     val visibilityChanged: LiveData<Boolean> get() = visibilityChangedMutable.distinctUntilChanged()
 
     fun toggleIsVisible(isVisible: Boolean) {
-        if(visibilityChangedMutable.value != isVisible) {
+        if(previousVisibility!= isVisible) {
             visibilityChangedMutable.postValue(isVisible)
         }
+        previousVisibility = isVisible
     }
 
 }
